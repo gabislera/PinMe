@@ -1,9 +1,10 @@
 import { forwardRef, useId } from 'react';
 import type { ComponentProps } from 'react';
+import type { FieldError } from 'react-hook-form';
 
 interface InputProps extends ComponentProps<'input'> {
   label: string;
-  error?: string;
+  error?: FieldError;
 }
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -27,7 +28,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           `}
           {...rest}
         />
-        {error && <span className="text-red-500 text-sm">{error}</span>}
+        {error && <span className="text-red-500 text-sm">{error.message}</span>}
       </div>
     );
   }
