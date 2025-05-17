@@ -5,6 +5,7 @@ import {
   createUser,
   setCurrentUser,
   isAuthenticated as checkAuth,
+  clearCurrentUser,
 } from './authStorage';
 
 export function signUp(data: SignUpSchema) {
@@ -24,6 +25,10 @@ export function signIn(data: SignInSchema) {
 
   const token = crypto.randomUUID();
   setCurrentUser({ userId: user.id, token });
+}
+
+export function signOut() {
+  clearCurrentUser();
 }
 
 export function isAuthenticated(): boolean {

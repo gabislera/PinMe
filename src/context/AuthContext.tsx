@@ -11,6 +11,7 @@ interface AuthContextProps {
   isAuthenticated: boolean;
   signUp: (data: SignUpSchema) => void;
   signIn: (data: SignInSchema) => void;
+  signOut: () => void;
 }
 
 export const AuthContext = createContext({} as AuthContextProps);
@@ -31,8 +32,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsAuthenticated(true);
   }
 
+  function signOut() {
+    authService.signOut();
+    setIsAuthenticated(false);
+  }
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signUp, signIn }}>
+    <AuthContext.Provider value={{ isAuthenticated, signUp, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

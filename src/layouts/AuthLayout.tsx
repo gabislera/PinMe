@@ -10,12 +10,12 @@ export const AuthLayout = () => {
           </Link>
 
           <div className="space-x-4">
-            <Link to="/login" className="px-4 py-2 hover:text-white/80border  text-white">
+            <Link to="/login" className="px-4 py-2 hover:text-white/80border  text-white text-sm">
               Log in
             </Link>
             <Link
               to="/register"
-              className="px-4 py-2 bg-secondary text-white rounded-md hover:bg-secondary/80"
+              className="px-4 py-2 bg-primary hover:opacity-80 transition-all duration-300 text-white rounded-md text-sm"
             >
               Sign up
             </Link>
