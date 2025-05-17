@@ -18,7 +18,7 @@ export const ContactFilters = () => {
             { label: 'Nome (A-Z)', value: 'az' },
             { label: 'Nome (Z-A)', value: 'za' },
           ]}
-          wrapperClassName="w-48"
+          wrapperClassName="!w-48"
         />
       </div>
     </div>

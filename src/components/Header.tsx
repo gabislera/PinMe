@@ -11,7 +11,7 @@ export const Header = () => {
     navigate('/login');
   };
   return (
-    <header className="border border-white/20 shadow-sm py-6 px-6">
+    <header className="border border-white/20 shadow-sm py-6 px-6 sticky top-0 bg-background z-10">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="flex items-center">
           <span className="text-xl font-bold text-white">PinMe</span>

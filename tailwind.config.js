@@ -12,6 +12,8 @@ export default {
         border: '#27272a',
         offwhite: '#FAF9FF',
         offblack: '#333333',
+
+        background: '#18191c',
       },
     },
   },

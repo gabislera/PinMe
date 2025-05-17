@@ -1,4 +1,5 @@
 import { useId, type SelectHTMLAttributes } from 'react';
+import type { FieldError } from 'react-hook-form';
 
 type SelectVariant = 'solid' | 'outlined';
 
@@ -7,6 +8,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   wrapperClassName?: string;
   variant?: SelectVariant;
+  error?: FieldError;
 }
 
 const variantClasses: Record<SelectVariant, string> = {
@@ -20,6 +22,7 @@ export const Select = ({
   className,
   wrapperClassName,
   variant = 'solid',
+  error,
   ...props
 }: SelectProps) => {
   const id = useId();
@@ -65,6 +68,7 @@ export const Select = ({
           </svg>
         </div>
       </div>
+      {error && <span className="text-red-500 text-sm">{error.message}</span>}
     </div>
   );
 };
