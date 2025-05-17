@@ -3,7 +3,7 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 
 const signInSchema = z.object({
@@ -18,6 +18,7 @@ export type SignInSchema = z.infer<typeof signInSchema>;
 
 export const SignIn = () => {
   const { signIn } = useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -30,6 +31,7 @@ export const SignIn = () => {
   const onSubmit = (data: SignInSchema) => {
     try {
       signIn(data);
+      navigate('/');
     } catch (error) {
       alert(error);
     }

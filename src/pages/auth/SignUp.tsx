@@ -4,7 +4,7 @@ import { Input } from '../../components/Input';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '../../hooks/useAuth';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const signUpSchema = z
   .object({
@@ -25,6 +25,7 @@ export type SignUpSchema = z.infer<typeof signUpSchema>;
 
 export const SignUp = () => {
   const { signUp } = useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -37,6 +38,7 @@ export const SignUp = () => {
   const onSubmit = (data: SignUpSchema) => {
     try {
       signUp(data);
+      navigate('/login');
     } catch (error) {
       alert(error);
     }
@@ -53,8 +55,8 @@ export const SignUp = () => {
         <form className="flex flex-col gap-2 w-full mt-4" onSubmit={handleSubmit(onSubmit)}>
           <Input
             label="Nome"
-            placeholder="exemplo@email.com"
-            type="email"
+            placeholder="Seu nome"
+            type="text"
             {...register('name')}
             error={errors.name}
           />

@@ -1,6 +1,11 @@
 import type { SignInSchema } from '../../pages/auth/SignIn';
 import type { SignUpSchema } from '../../pages/auth/SignUp';
-import { findUserByEmail, createUser, setCurrentUser, getCurrentUser } from './authStorage';
+import {
+  findUserByEmail,
+  createUser,
+  setCurrentUser,
+  isAuthenticated as checkAuth,
+} from './authStorage';
 
 export function signUp(data: SignUpSchema) {
   const userExists = findUserByEmail(data.email);
@@ -8,9 +13,7 @@ export function signUp(data: SignUpSchema) {
     throw new Error('E-mail já cadastrado');
   }
 
-  const newUser = { email: data.email, password: data.password };
-  createUser(newUser);
-  setCurrentUser(data.email);
+  createUser({ name: data.name, email: data.email, password: data.password });
 }
 
 export function signIn(data: SignInSchema) {
@@ -19,9 +22,10 @@ export function signIn(data: SignInSchema) {
     throw new Error('E-mail ou senha inválidos');
   }
 
-  setCurrentUser(data.email);
+  const token = crypto.randomUUID();
+  setCurrentUser({ userId: user.id, token });
 }
 
 export function isAuthenticated(): boolean {
-  return !!getCurrentUser();
+  return checkAuth();
 }

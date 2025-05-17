@@ -1,4 +1,4 @@
-import { createContext, useState, type ReactNode } from 'react';
+import { createContext, useEffect, useState, type ReactNode } from 'react';
 import * as authService from '../services/auth/authService';
 import type { SignUpSchema } from '../pages/auth/SignUp';
 import type { SignInSchema } from '../pages/auth/SignIn';
@@ -16,11 +16,14 @@ interface AuthContextProps {
 export const AuthContext = createContext({} as AuthContextProps);
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setIsAuthenticated(authService.isAuthenticated());
+  }, []);
 
   function signUp(data: SignUpSchema) {
     authService.signUp(data);
-    setIsAuthenticated(true);
   }
 
   function signIn(data: SignInSchema) {
