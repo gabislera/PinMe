@@ -3,6 +3,8 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useAuth } from '../../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 const signUpSchema = z
   .object({
@@ -19,9 +21,11 @@ const signUpSchema = z
     path: ['confirmPassword'],
   });
 
-type SignUpSchema = z.infer<typeof signUpSchema>;
+export type SignUpSchema = z.infer<typeof signUpSchema>;
 
 export const SignUp = () => {
+  const { signUp } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -31,11 +35,15 @@ export const SignUp = () => {
   });
 
   const onSubmit = (data: SignUpSchema) => {
-    console.log(data);
+    try {
+      signUp(data);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 ">
+    <div className="flex flex-col items-center justify-center h-[calc(100vh-78px)]  ">
       <div className="flex flex-col items-center gap-4 w-full max-w-[450px] bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl shadow-lg">
         <div className="flex flex-col items-center gap-1">
           <h1 className="text-3xl font-bold text-white">Crie sua conta</h1>
@@ -76,12 +84,12 @@ export const SignUp = () => {
 
         <span className="text-muted text-sm text-center">
           Já tem uma conta?{' '}
-          <a
-            href="/"
+          <Link
+            to="/login"
             className="text-tertiary hover:text-secondary transition-colors duration-300 font-bold"
           >
             Acesse sua conta
-          </a>
+          </Link>
         </span>
       </div>
     </div>

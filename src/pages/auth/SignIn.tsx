@@ -3,34 +3,40 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
-const signUpSchema = z
-  .object({
-    email: z.string().email({ message: 'Digite um email válido' }),
-    password: z
-      .string()
-      .min(8, { message: 'Senha deve ter no mínimo 8 caracteres' })
-      .max(15, { message: 'Senha deve ter no máximo 15 caracteres' }),
-  })
-  .partial();
+const signInSchema = z.object({
+  email: z.string().email({ message: 'Digite um email válido' }),
+  password: z
+    .string()
+    .min(8, { message: 'Senha deve ter no mínimo 8 caracteres' })
+    .max(15, { message: 'Senha deve ter no máximo 15 caracteres' }),
+});
 
-type SignUpSchema = z.infer<typeof signUpSchema>;
+export type SignInSchema = z.infer<typeof signInSchema>;
 
 export const SignIn = () => {
+  const { signIn } = useAuth();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpSchema>({
-    resolver: zodResolver(signUpSchema),
+  } = useForm<SignInSchema>({
+    resolver: zodResolver(signInSchema),
   });
 
-  const onSubmit = (data: SignUpSchema) => {
-    console.log(data);
+  const onSubmit = (data: SignInSchema) => {
+    try {
+      signIn(data);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-br from-gray-800 via-gray-900 to-gray-950 ">
+    <div className="flex flex-col items-center justify-center h-[calc(100vh-78px)]  ">
       <div className="flex flex-col items-center gap-4 w-full max-w-[450px] bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl shadow-lg">
         <div className="flex flex-col items-center gap-1">
           <h1 className="text-3xl font-bold text-white">Acesse sua conta</h1>
@@ -57,12 +63,12 @@ export const SignIn = () => {
 
         <span className="text-muted text-sm text-center">
           Ainda não tem uma conta?{' '}
-          <a
-            href="/register"
+          <Link
+            to="/register"
             className="text-tertiary hover:text-secondary transition-colors duration-300 font-bold"
           >
             Crie agora
-          </a>
+          </Link>
         </span>
       </div>
     </div>
