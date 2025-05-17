@@ -9,6 +9,7 @@ export default {
         tertiary: '#A78BFA',
         muted: '#EDE9FE',
 
+        border: '#27272a',
         offwhite: '#FAF9FF',
         offblack: '#333333',
       },
