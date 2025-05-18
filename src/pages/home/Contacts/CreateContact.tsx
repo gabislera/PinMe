@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { cpf } from 'cpf-cnpj-validator';
 
 import { Input } from '../../../components/Input';
 import { Select } from '../../../components/Select';
 import { Button } from '../../../components/Button';
 import { brazilStates } from '../../../utils/states';
-import { validateCpf } from '../../../utils/validateCpf';
 import { useContacts } from '../../../hooks/useContacts';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +20,7 @@ const contactFormSchema = z.object({
   cpf: z
     .string()
     .regex(/^\d{3}\.?\d{3}\.?\d{3}-?\d{2}$/, { message: 'Formato de CPF inválido' })
-    .refine(validateCpf, { message: 'CPF inválido' }),
+    .refine(cpf.isValid, { message: 'CPF inválido' }),
   address: z.object({
     zipcode: z.string().regex(/^\d{5}-?\d{3}$/, { message: 'CEP inválido. Ex: 00000-000' }),
     street: z.string().min(1, { message: 'Rua é obrigatória' }),
