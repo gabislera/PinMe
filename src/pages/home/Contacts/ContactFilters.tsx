@@ -1,24 +1,35 @@
 import { Search } from 'lucide-react';
+import { useContext, type ChangeEvent } from 'react';
 import { Input } from '../../../components/Input';
 import { Select } from '../../../components/Select';
+import { ContactsContext } from '../../../context/ContactsContext';
+import type { SortOrder } from '../../../services/contacts/getContacts';
 
 export const ContactFilters = () => {
+  const { searchTerm, setSearchTerm, sortOrder, setSortOrder } = useContext(ContactsContext);
+
+  const handleSortChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSortOrder(event.target.value as SortOrder);
+  };
+
   return (
     <div className="flex items-center gap-3 mb-4">
       <div className="flex items-center gap-2 w-full">
         <Input
           type="text"
-          // variant="outlined"
           placeholder="Buscar por nome ou CPF"
           icon={<Search className="w-4 h-4 text-dragon-500 dark:text-dragon-tertiary" />}
+          value={searchTerm}
+          onChange={e => setSearchTerm(e.target.value)}
         />
         <Select
-          // variant="outlined"
           options={[
-            { label: 'Nome (A-Z)', value: 'az' },
-            { label: 'Nome (Z-A)', value: 'za' },
+            { label: 'Nome (A-Z)', value: 'asc' },
+            { label: 'Nome (Z-A)', value: 'desc' },
           ]}
           wrapperClassName="!w-48"
+          value={sortOrder}
+          onChange={handleSortChange}
         />
       </div>
     </div>

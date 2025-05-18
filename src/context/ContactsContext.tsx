@@ -1,6 +1,10 @@
 import { createContext, useEffect, useState, type ReactNode } from 'react';
 import type { StoredContact } from '../repositories/contactsStorage';
-import { listContactsService } from '../services/contacts/getContacts';
+import {
+  listContactsService,
+  type ContactFilters,
+  type SortOrder,
+} from '../services/contacts/getContacts';
 import { createContactService } from '../services/contacts/createContact';
 import type { ContactSchema } from '../pages/home/Contacts/CreateContact';
 import { removeContactService } from '../services/contacts/removeContact';
@@ -9,6 +13,10 @@ interface ContactsContextProps {
   contacts: StoredContact[];
   createContact: (data: ContactSchema) => void;
   removeContact: (id: string) => void;
+  searchTerm: string;
+  setSearchTerm: (text: string) => void;
+  sortOrder: SortOrder;
+  setSortOrder: (order: SortOrder) => void;
 }
 
 interface ContactsProviderProps {
@@ -19,23 +27,50 @@ export const ContactsContext = createContext({} as ContactsContextProps);
 
 export function ContactsProvider({ children }: ContactsProviderProps) {
   const [contacts, setContacts] = useState<StoredContact[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
 
   useEffect(() => {
-    setContacts(listContactsService());
-  }, []);
+    const filters: ContactFilters = {
+      searchTerm: searchTerm || undefined,
+      sortOrder,
+    };
+    setContacts(listContactsService(filters));
+  }, [searchTerm, sortOrder]);
 
   const createContact = (data: ContactSchema) => {
-    const newContact = createContactService(data);
-    setContacts(prev => [...prev, newContact]);
+    createContactService(data);
+
+    const filters: ContactFilters = {
+      searchTerm: searchTerm || undefined,
+      sortOrder,
+    };
+    setContacts(listContactsService(filters));
   };
 
   const removeContact = (id: string) => {
     removeContactService(id);
-    setContacts(prev => prev.filter(contact => contact.id !== id));
+
+    const filters: ContactFilters = {
+      searchTerm: '',
+      sortOrder,
+    };
+    setSearchTerm('');
+    setContacts(listContactsService(filters));
   };
 
   return (
-    <ContactsContext.Provider value={{ contacts, createContact, removeContact }}>
+    <ContactsContext.Provider
+      value={{
+        contacts,
+        createContact,
+        removeContact,
+        searchTerm,
+        setSearchTerm,
+        sortOrder,
+        setSortOrder,
+      }}
+    >
       {children}
     </ContactsContext.Provider>
   );
