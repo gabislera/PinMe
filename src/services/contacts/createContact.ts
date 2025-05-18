@@ -18,4 +18,6 @@ export const createContactService = (contact: ContactSchema) => {
   };
 
   saveContact(newContact);
+
+  return newContact;
 };

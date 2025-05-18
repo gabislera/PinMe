@@ -8,7 +8,7 @@ import { Select } from '../../../components/Select';
 import { Button } from '../../../components/Button';
 import { brazilStates } from '../../../utils/states';
 import { validateCpf } from '../../../utils/validateCpf';
-import { createContactService } from '../../../services/contacts/createContact';
+import { useContacts } from '../../../hooks/useContacts';
 
 const contactFormSchema = z.object({
   name: z.string().min(1, { message: 'Nome é obrigatório' }),
@@ -34,6 +34,7 @@ const contactFormSchema = z.object({
 export type ContactSchema = z.infer<typeof contactFormSchema>;
 
 export const CreateContact = () => {
+  const { createContact } = useContacts();
   const {
     register,
     handleSubmit,
@@ -86,7 +87,7 @@ export const CreateContact = () => {
 
   const onSubmit = (data: ContactSchema) => {
     try {
-      createContactService(data);
+      createContact(data);
       alert('Contato criado com sucesso');
     } catch (error) {
       alert(error);

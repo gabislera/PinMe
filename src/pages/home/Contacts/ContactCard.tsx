@@ -1,7 +1,10 @@
 import { MapPin, Pencil, Phone, Trash } from 'lucide-react';
 import type { StoredContact } from '../../../repositories/contactsStorage';
+import { useContacts } from '../../../hooks/useContacts';
+import { Button } from '../../../components/Button';
 
 export const ContactCard = ({ contact }: { contact: StoredContact }) => {
+  const { removeContact } = useContacts();
   return (
     <div
       key={contact.id}
@@ -12,14 +15,14 @@ export const ContactCard = ({ contact }: { contact: StoredContact }) => {
           <div className="flex items-center justify-between">
             <h3 className="font-medium text-dragon-700 dark:text-white">{contact.name}</h3>
             <div className="flex gap-1">
-              <button className="h-8 w-8 flex items-center justify-center rounded-md hover:bg-dragon-100/50 dark:hover:bg-dragon-700">
-                <Pencil className="w-4 h-4 text-dragon-700 dark:text-white" />
+              <Button variant="ghost" size="sm">
+                <Pencil className="w-4 h-4 text-dragon-700 dark:text-white hover:text-dragon-600 dark:hover:text-dragon-300" />
                 <span className="sr-only">Editar</span>
-              </button>
-              <button className="h-8 w-8 flex items-center justify-center rounded-md hover:bg-dragon-100/50 dark:hover:bg-dragon-700 text-red-500">
-                <Trash className="w-4 h-4 text-red-500" />
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => removeContact(contact.id)}>
+                <Trash className="w-4 h-4 text-red-500 hover:text-red-600" />
                 <span className="sr-only">Excluir</span>
-              </button>
+              </Button>
             </div>
           </div>
 
