@@ -38,8 +38,8 @@ export function ContactsProvider({ children }: ContactsProviderProps) {
     setContacts(listContactsService(filters));
   }, [searchTerm, sortOrder]);
 
-  const createContact = (data: ContactSchema) => {
-    createContactService(data);
+  const createContact = async (data: ContactSchema) => {
+    await createContactService(data);
 
     const filters: ContactFilters = {
       searchTerm: searchTerm || undefined,

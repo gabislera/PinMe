@@ -7,6 +7,8 @@ export type StoredContact = ContactSchema & {
   userId: string;
   createdAt: string;
   updatedAt: string;
+  latitude: number;
+  longitude: number;
 };
 
 export function getContacts(): StoredContact[] {

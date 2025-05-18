@@ -1,8 +1,9 @@
 import type { ContactSchema } from '../../pages/home/Contacts/CreateContact';
 import { getContacts, saveContact, type StoredContact } from '../../repositories/contactsStorage';
 import { getCurrentUser, getUserIdFromToken } from '../../repositories/authStorage';
+import { getGeoCodeAddress } from '../../utils/getGeoCodeAddress';
 
-export const createContactService = (contact: ContactSchema) => {
+export const createContactService = async (contact: ContactSchema) => {
   // Get current user ID
   const session = getCurrentUser();
   if (!session) {
@@ -24,12 +25,16 @@ export const createContactService = (contact: ContactSchema) => {
     throw new Error('Email já cadastrado');
   }
 
+  const { lat, lng } = await getGeoCodeAddress(contact.address);
+
   const newContact: StoredContact = {
     ...contact,
     id: crypto.randomUUID(),
     userId,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    latitude: lat,
+    longitude: lng,
   };
 
   saveContact(newContact);
