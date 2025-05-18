@@ -5,6 +5,7 @@ import { Input } from './Input';
 import { Button } from './Button';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { showToast } from '../utils/toast';
 
 const deleteAccountSchema = z.object({
   password: z.string().min(1, { message: 'Senha é obrigatória' }),
@@ -43,7 +44,7 @@ export const DeleteAccountModal = ({ isOpen, onClose }: DeleteAccountModalProps)
       deleteAccount(data);
       navigate('/login');
     } catch (error) {
-      alert(error);
+      showToast(String(error), { type: 'error' });
     }
   };
 

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { DeleteAccountModal } from '../../components/DeleteAccountModal';
 import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { showToast } from '../../utils/toast';
 
 const passwordChangeSchema = z
   .object({
@@ -41,9 +42,9 @@ export const Settings = () => {
     try {
       changePassword(data);
       reset();
-      alert('Senha alterada com sucesso!');
+      showToast('Senha alterada com sucesso!', { type: 'success' });
     } catch (error) {
-      alert(error);
+      showToast(String(error), { type: 'error' });
     }
   };
 

@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '../../hooks/useAuth';
 import { Link, useNavigate } from 'react-router-dom';
+import { showToast } from '../../utils/toast';
 
 const signUpSchema = z
   .object({
@@ -39,8 +40,9 @@ export const SignUp = () => {
     try {
       signUp(data);
       navigate('/login');
+      showToast('Cadastro realizado com sucesso', { type: 'success' });
     } catch (error) {
-      alert(error);
+      showToast(String(error), { type: 'error' });
     }
   };
 

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import { showToast } from '../../utils/toast';
 
 const signInSchema = z.object({
   email: z.string().email({ message: 'Digite um email válido' }),
@@ -30,7 +31,7 @@ export const SignIn = () => {
       signIn(data);
       navigate('/');
     } catch (error) {
-      alert(error);
+      showToast(String(error), { type: 'error' });
     }
   };
 

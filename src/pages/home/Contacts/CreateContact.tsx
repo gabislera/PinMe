@@ -10,6 +10,7 @@ import { Button } from '../../../components/Button';
 import { brazilStates } from '../../../utils/states';
 import { useContacts } from '../../../hooks/useContacts';
 import { useNavigate } from 'react-router-dom';
+import { showToast } from '../../../utils/toast';
 
 const contactFormSchema = z.object({
   name: z.string().min(1, { message: 'Nome é obrigatório' }),
@@ -78,7 +79,7 @@ export const CreateContact = () => {
         setValue('address.city', data.localidade || '');
         setValue('address.state', data.uf || '');
       } catch {
-        alert('Erro ao buscar o CEP'); // TODO: add toast
+        showToast('Erro ao buscar o CEP', { type: 'error' });
       } finally {
         setIsLoadingCep(false);
       }
@@ -90,10 +91,10 @@ export const CreateContact = () => {
   const onSubmit = (data: ContactSchema) => {
     try {
       createContact(data);
-      alert('Contato criado com sucesso');
+      showToast('Contato criado com sucesso', { type: 'success' });
       navigate('/home');
     } catch (error) {
-      alert(error);
+      showToast(String(error), { type: 'error' });
     }
   };
 
