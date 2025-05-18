@@ -11,7 +11,7 @@ import { removeContactService } from '../services/contacts/removeContact';
 
 interface ContactsContextProps {
   contacts: StoredContact[];
-  createContact: (data: ContactSchema) => void;
+  createContact: (data: ContactSchema) => Promise<StoredContact>;
   removeContact: (id: string) => void;
   searchTerm: string;
   setSearchTerm: (text: string) => void;
@@ -41,14 +41,16 @@ export function ContactsProvider({ children }: ContactsProviderProps) {
     setContacts(listContactsService(filters));
   }, [searchTerm, sortOrder]);
 
-  const createContact = async (data: ContactSchema) => {
-    await createContactService(data);
+  const createContact = async (data: ContactSchema): Promise<StoredContact> => {
+    const newContact = await createContactService(data);
 
     const filters: ContactFilters = {
       searchTerm: searchTerm || undefined,
       sortOrder,
     };
     setContacts(listContactsService(filters));
+
+    return newContact;
   };
 
   const removeContact = (id: string) => {

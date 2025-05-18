@@ -88,13 +88,17 @@ export const CreateContact = () => {
     fetchAddress();
   }, [zipcode, setValue, setError]);
 
-  const onSubmit = (data: ContactSchema) => {
+  const onSubmit = async (data: ContactSchema) => {
     try {
-      createContact(data);
+      await createContact(data);
       showToast('Contato criado com sucesso', { type: 'success' });
       navigate('/home');
     } catch (error) {
-      showToast(String(error), { type: 'error' });
+      if (error instanceof Error) {
+        showToast(error.message, { type: 'error' });
+      } else {
+        showToast('Erro ao criar contato', { type: 'error' });
+      }
     }
   };
 
