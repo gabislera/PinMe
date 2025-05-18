@@ -7,6 +7,7 @@ import {
   CURRENT_USER_KEY,
   getCurrentUser,
   getUsers,
+  getUserIdFromToken,
   type StoredUser,
 } from '../repositories/authStorage';
 import { updatePasswordService } from '../services/users/updatePassword';
@@ -56,8 +57,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const session = getCurrentUser();
     if (!session) return null;
 
+    const userId = getUserIdFromToken(session.token);
+    if (!userId) return null;
+
     const users = getUsers();
-    const user = users.find(item => item.id === session.userId);
+    const user = users.find(item => item.id === userId);
     return user || null;
   }
 

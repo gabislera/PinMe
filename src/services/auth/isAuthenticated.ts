@@ -1,6 +1,8 @@
-import { getCurrentUser } from '../../repositories/authStorage';
+import { getCurrentUser, isTokenValid } from '../../repositories/authStorage';
 
 export function isAuthenticatedService(): boolean {
   const session = getCurrentUser();
-  return !!session?.token;
+  if (!session?.token) return false;
+
+  return isTokenValid(session.token);
 }

@@ -1,5 +1,10 @@
 import type { UpdatePasswordSchema } from '../../pages/settings';
-import { getCurrentUser, getUsers, updateUserPassword } from '../../repositories/authStorage';
+import {
+  getCurrentUser,
+  getUsers,
+  updateUserPassword,
+  getUserIdFromToken,
+} from '../../repositories/authStorage';
 
 export function updatePasswordService(data: UpdatePasswordSchema): boolean {
   const currentUser = getCurrentUser();
@@ -7,8 +12,13 @@ export function updatePasswordService(data: UpdatePasswordSchema): boolean {
     throw new Error('Usuário não autenticado');
   }
 
+  const userId = getUserIdFromToken(currentUser.token);
+  if (!userId) {
+    throw new Error('Token inválido');
+  }
+
   const users = getUsers();
-  const user = users.find(user => user.id === currentUser.userId);
+  const user = users.find(user => user.id === userId);
 
   if (!user) {
     throw new Error('Usuário não encontrado');

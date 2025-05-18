@@ -1,5 +1,5 @@
 export const USERS_KEY = 'users';
-export const CURRENT_USER_KEY = 'current_user';
+export const CURRENT_USER_KEY = 'session_id';
 
 export type StoredUser = {
   id: string;
@@ -9,7 +9,6 @@ export type StoredUser = {
 };
 
 export type AuthSession = {
-  userId: string;
   token: string;
 };
 
@@ -37,6 +36,25 @@ export function setCurrentUser(session: AuthSession) {
 export function getCurrentUser(): AuthSession | null {
   const data = localStorage.getItem(CURRENT_USER_KEY);
   return data ? JSON.parse(data) : null;
+}
+
+export function getUserIdFromToken(token: string): string | null {
+  try {
+    const [userId] = token.split('_');
+    return userId;
+  } catch {
+    return null;
+  }
+}
+
+export function isTokenValid(token: string): boolean {
+  try {
+    const [, expirationTime] = token.split('_');
+    const expirationMs = parseInt(expirationTime) * 1000;
+    return expirationMs > Date.now();
+  } catch {
+    return false;
+  }
 }
 
 export function updateUserPassword(userId: string, newPassword: string): boolean {

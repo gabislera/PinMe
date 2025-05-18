@@ -3,6 +3,7 @@ import {
   getUsers,
   USERS_KEY,
   CURRENT_USER_KEY,
+  getUserIdFromToken,
 } from '../../repositories/authStorage';
 
 export const deleteUserService = (password: string) => {
@@ -11,8 +12,13 @@ export const deleteUserService = (password: string) => {
     throw new Error('Usuário não autenticado');
   }
 
+  const userId = getUserIdFromToken(currentUser.token);
+  if (!userId) {
+    throw new Error('Token inválido');
+  }
+
   const users = getUsers();
-  const userIndex = users.findIndex(user => user.id === currentUser.userId);
+  const userIndex = users.findIndex(user => user.id === userId);
 
   if (userIndex === -1) {
     throw new Error('Usuário não encontrado');
