@@ -1,8 +1,9 @@
 import { ContactCard } from './ContactCard';
 import { useContacts } from '../../../hooks/useContacts';
+// components/ContactList.tsx
 
 export const ContactList = () => {
-  const { contacts } = useContacts();
+  const { contacts, selectedContact, setSelectedContact } = useContacts();
 
   if (contacts.length === 0) {
     return (
@@ -15,7 +16,12 @@ export const ContactList = () => {
   return (
     <div className="space-y-4">
       {contacts.map(contact => (
-        <ContactCard key={contact.id} contact={contact} />
+        <ContactCard
+          key={contact.id}
+          contact={contact}
+          isSelected={selectedContact?.id === contact.id}
+          onClick={() => setSelectedContact(contact)}
+        />
       ))}
     </div>
   );

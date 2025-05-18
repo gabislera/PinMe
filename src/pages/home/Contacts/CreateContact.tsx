@@ -9,6 +9,7 @@ import { Button } from '../../../components/Button';
 import { brazilStates } from '../../../utils/states';
 import { validateCpf } from '../../../utils/validateCpf';
 import { useContacts } from '../../../hooks/useContacts';
+import { useNavigate } from 'react-router-dom';
 
 const contactFormSchema = z.object({
   name: z.string().min(1, { message: 'Nome é obrigatório' }),
@@ -35,6 +36,7 @@ export type ContactSchema = z.infer<typeof contactFormSchema>;
 
 export const CreateContact = () => {
   const { createContact } = useContacts();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -89,6 +91,7 @@ export const CreateContact = () => {
     try {
       createContact(data);
       alert('Contato criado com sucesso');
+      navigate('/home');
     } catch (error) {
       alert(error);
     }

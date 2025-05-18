@@ -3,12 +3,23 @@ import type { StoredContact } from '../../../repositories/contactsStorage';
 import { useContacts } from '../../../hooks/useContacts';
 import { Button } from '../../../components/Button';
 
-export const ContactCard = ({ contact }: { contact: StoredContact }) => {
+export const ContactCard = ({
+  contact,
+  onClick,
+  isSelected,
+}: {
+  contact: StoredContact;
+  onClick: () => void;
+  isSelected: boolean;
+}) => {
   const { removeContact } = useContacts();
   return (
     <div
       key={contact.id}
-      className="bg-white dark:bg-dragon-800 border border-dragon-200 dark:border-dragon-800 rounded-lg p-4"
+      className={`bg-white dark:bg-dragon-800 border border-dragon-200 dark:border-dragon-800 rounded-lg p-4 cursor-pointer ${
+        isSelected ? 'border-dragon-500 dark:border-dragon-500' : ''
+      }`}
+      onClick={onClick}
     >
       <div className="flex items-start gap-4">
         <div className="flex-1 space-y-1">

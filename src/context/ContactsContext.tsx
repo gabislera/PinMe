@@ -17,6 +17,8 @@ interface ContactsContextProps {
   setSearchTerm: (text: string) => void;
   sortOrder: SortOrder;
   setSortOrder: (order: SortOrder) => void;
+  selectedContact: StoredContact | null;
+  setSelectedContact: (contact: StoredContact | null) => void;
 }
 
 interface ContactsProviderProps {
@@ -29,6 +31,7 @@ export function ContactsProvider({ children }: ContactsProviderProps) {
   const [contacts, setContacts] = useState<StoredContact[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
+  const [selectedContact, setSelectedContact] = useState<StoredContact | null>(null);
 
   useEffect(() => {
     const filters: ContactFilters = {
@@ -69,6 +72,8 @@ export function ContactsProvider({ children }: ContactsProviderProps) {
         setSearchTerm,
         sortOrder,
         setSortOrder,
+        selectedContact,
+        setSelectedContact,
       }}
     >
       {children}
