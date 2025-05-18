@@ -1,16 +1,8 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from './Button';
-import { useAuth } from '../hooks/useAuth';
+import { Link } from 'react-router-dom';
 import { ThemeToggle } from './ThemeToggle';
+import { UserMenu } from './UserMenu';
 
 export const Header = () => {
-  const navigate = useNavigate();
-  const { signOut } = useAuth();
-
-  const handleSignOut = () => {
-    signOut();
-    navigate('/login');
-  };
   return (
     <header className="border border-dragon-200 dark:border-dragon-800 shadow-sm py-6 px-6 sticky top-0 bg-white dark:bg-dragon-900 z-10">
       <div className="container mx-auto flex justify-between items-center">
@@ -20,9 +12,7 @@ export const Header = () => {
 
         <div className="flex items-center space-x-4">
           <ThemeToggle />
-          <Button className="min-w-[100px] py-1" onClick={handleSignOut}>
-            Sair
-          </Button>
+          <UserMenu />
         </div>
       </div>
     </header>
