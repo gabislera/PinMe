@@ -1,17 +1,7 @@
 import { MapPin, Pencil, Phone, Trash } from 'lucide-react';
+import type { StoredContact } from '../../../repositories/contactsStorage';
 
-interface ContactCardProps {
-  contact: {
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
-    address: string;
-    cpf: string;
-  };
-}
-
-export const ContactCard = ({ contact }: ContactCardProps) => {
+export const ContactCard = ({ contact }: { contact: StoredContact }) => {
   return (
     <div
       key={contact.id}
@@ -40,7 +30,7 @@ export const ContactCard = ({ contact }: ContactCardProps) => {
           </div>
           <div className="flex items-center text-sm text-dragon-500 dark:text-dragon-300">
             <MapPin className="w-4 h-4" />
-            {contact.address}
+            {`${contact.address.street}, ${contact.address.number} - ${contact.address.neighborhood}, ${contact.address.city} - ${contact.address.state}`}
           </div>
           <div className="text-sm text-dragon-500 dark:text-dragon-300 mt-1">
             <span className="font-medium">CPF:</span> {contact.cpf}
