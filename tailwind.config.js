@@ -10,6 +10,7 @@ export default {
           secondary: '#059669', // Esmeralda profunda
           tertiary: '#ECFDF5', // Esmeralda pálida (clara)
           accent: '#064E3B', // Jade sombrio
+          danger: '#EF4444', // Vermelho
 
           100: '#F3F4F6', // Prata claro
           200: '#E5E7EB', // Prata fosco

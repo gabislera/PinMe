@@ -2,6 +2,7 @@ import { createContext, useEffect, useState, type ReactNode } from 'react';
 import type { SignUpSchema } from '../pages/auth/SignUp';
 import type { SignInSchema } from '../pages/auth/SignIn';
 import type { UpdatePasswordSchema } from '../pages/settings';
+import type { DeleteAccountSchema } from '../components/DeleteAccountModal';
 import {
   CURRENT_USER_KEY,
   getCurrentUser,
@@ -12,6 +13,7 @@ import { updatePasswordService } from '../services/users/updatePassword';
 import { createUserService } from '../services/users/createUser';
 import { signInService } from '../services/auth/signIn';
 import { isAuthenticatedService } from '../services/auth/isAuthenticated';
+import { deleteUserService } from '../services/users/deleteUser';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -24,6 +26,7 @@ interface AuthContextProps {
   signOut: () => void;
   getUserData: () => StoredUser | null;
   changePassword: (data: UpdatePasswordSchema) => boolean;
+  deleteAccount: (data: DeleteAccountSchema) => void;
 }
 
 export const AuthContext = createContext({} as AuthContextProps);
@@ -62,9 +65,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return updatePasswordService(data);
   }
 
+  function deleteAccount(data: DeleteAccountSchema) {
+    deleteUserService(data.password);
+    setIsAuthenticated(false);
+  }
+
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, signUp, signIn, signOut, getUserData, changePassword }}
+      value={{
+        isAuthenticated,
+        signUp,
+        signIn,
+        signOut,
+        getUserData,
+        changePassword,
+        deleteAccount,
+      }}
     >
       {children}
     </AuthContext.Provider>
