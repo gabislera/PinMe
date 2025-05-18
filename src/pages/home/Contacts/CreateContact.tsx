@@ -7,10 +7,21 @@ import { cpf } from 'cpf-cnpj-validator';
 import { Input } from '../../../components/Input';
 import { Select } from '../../../components/Select';
 import { Button } from '../../../components/Button';
+import { AddressSearch } from '../../../components/AddressSearch';
 import { brazilStates } from '../../../utils/states';
 import { useContacts } from '../../../hooks/useContacts';
 import { useNavigate } from 'react-router-dom';
 import { showToast } from '../../../utils/toast';
+
+interface ViaCepAddress {
+  cep: string;
+  logradouro: string;
+  complemento: string;
+  bairro: string;
+  localidade: string;
+  uf: string;
+  numero?: string;
+}
 
 const contactFormSchema = z.object({
   name: z.string().min(1, { message: 'Nome é obrigatório' }),
@@ -88,6 +99,16 @@ export const CreateContact = () => {
     fetchAddress();
   }, [zipcode, setValue, setError]);
 
+  const handleSelectAddress = (address: ViaCepAddress) => {
+    setValue('address.zipcode', address.cep, { shouldValidate: true });
+    setValue('address.street', address.logradouro, { shouldValidate: true });
+    setValue('address.neighborhood', address.bairro, { shouldValidate: true });
+    setValue('address.city', address.localidade, { shouldValidate: true });
+    setValue('address.state', address.uf, { shouldValidate: true });
+    // Focus on the number input since it still needs to be filled
+    document.getElementById('address-number')?.focus();
+  };
+
   const onSubmit = async (data: ContactSchema) => {
     try {
       await createContact(data);
@@ -150,6 +171,14 @@ export const CreateContact = () => {
               Endereço
             </h2>
 
+            <div className="lg:col-span-2">
+              <AddressSearch
+                label="Buscar endereço"
+                placeholder="Digite UF, cidade e rua (exemplo: SP, São Paulo, Avenida Paulista)"
+                onSelectAddress={handleSelectAddress}
+              />
+            </div>
+
             <Input
               label="CEP *"
               variant="outlined"
@@ -172,6 +201,7 @@ export const CreateContact = () => {
               variant="outlined"
               placeholder="123"
               type="number"
+              id="address-number"
               {...register('address.number')}
               error={errors.address?.number}
             />

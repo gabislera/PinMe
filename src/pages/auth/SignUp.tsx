@@ -34,6 +34,7 @@ export const SignUp = () => {
     formState: { errors, isSubmitting },
   } = useForm<SignUpSchema>({
     resolver: zodResolver(signUpSchema),
+    mode: 'onBlur',
   });
 
   const onSubmit = (data: SignUpSchema) => {
@@ -47,7 +48,7 @@ export const SignUp = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-[calc(100vh-78px)]">
+    <div className="flex flex-col items-center py-20 h-[calc(100vh-78px)]">
       <div className="flex flex-col items-center gap-4 w-full max-w-[450px] bg-white/80 dark:bg-white/10 backdrop-blur-md border border-dragon-200 dark:border-white/20 p-8 rounded-3xl shadow-lg">
         <div className="flex flex-col items-center gap-1">
           <h1 className="text-3xl font-bold text-dragon-700 dark:text-white">Crie sua conta</h1>
