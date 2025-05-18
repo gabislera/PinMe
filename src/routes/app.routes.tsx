@@ -11,6 +11,7 @@ export function AppRoutes() {
       <Route element={<HomeLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/contacts/new" element={<CreateContact />} />
+        <Route path="/contacts/edit/:id" element={<CreateContact />} />
       </Route>
       <Route element={<SettingsLayout />}>
         <Route path="/settings" element={<Settings />} />

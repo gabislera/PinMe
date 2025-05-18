@@ -8,10 +8,12 @@ import {
 import { createContactService } from '../services/contacts/createContact';
 import type { ContactSchema } from '../pages/home/Contacts/CreateContact';
 import { removeContactService } from '../services/contacts/removeContact';
+import { updateContactService } from '../services/contacts/updateContact';
 
 interface ContactsContextProps {
   contacts: StoredContact[];
   createContact: (data: ContactSchema) => Promise<StoredContact>;
+  updateContact: (id: string, data: ContactSchema) => Promise<StoredContact>;
   removeContact: (id: string) => void;
   searchTerm: string;
   setSearchTerm: (text: string) => void;
@@ -25,7 +27,7 @@ interface ContactsProviderProps {
   children: ReactNode;
 }
 
-export const ContactsContext = createContext({} as ContactsContextProps);
+export const ContactsContext = createContext<ContactsContextProps | null>(null);
 
 export function ContactsProvider({ children }: ContactsProviderProps) {
   const [contacts, setContacts] = useState<StoredContact[]>([]);
@@ -53,6 +55,18 @@ export function ContactsProvider({ children }: ContactsProviderProps) {
     return newContact;
   };
 
+  const updateContact = async (id: string, data: ContactSchema): Promise<StoredContact> => {
+    const updatedContact = await updateContactService(id, data);
+
+    const filters: ContactFilters = {
+      searchTerm: searchTerm || undefined,
+      sortOrder,
+    };
+    setContacts(listContactsService(filters));
+
+    return updatedContact;
+  };
+
   const removeContact = (id: string) => {
     removeContactService(id);
 
@@ -69,6 +83,7 @@ export function ContactsProvider({ children }: ContactsProviderProps) {
       value={{
         contacts,
         createContact,
+        updateContact,
         removeContact,
         searchTerm,
         setSearchTerm,

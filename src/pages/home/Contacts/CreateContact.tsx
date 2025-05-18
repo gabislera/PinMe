@@ -10,7 +10,7 @@ import { Button } from '../../../components/Button';
 import { AddressSearch } from '../../../components/AddressSearch';
 import { brazilStates } from '../../../utils/states';
 import { useContacts } from '../../../hooks/useContacts';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { showToast } from '../../../utils/toast';
 
 interface ViaCepAddress {
@@ -47,8 +47,14 @@ const contactFormSchema = z.object({
 export type ContactSchema = z.infer<typeof contactFormSchema>;
 
 export const CreateContact = () => {
-  const { createContact } = useContacts();
+  const { id } = useParams<{ id: string }>();
+  const { createContact, updateContact, contacts } = useContacts();
   const navigate = useNavigate();
+
+  // Determine if we're in edit mode
+  const isEditMode = !!id;
+  const contactToEdit = isEditMode ? contacts.find(contact => contact.id === id) : null;
+
   const {
     register,
     handleSubmit,
@@ -59,11 +65,28 @@ export const CreateContact = () => {
   } = useForm<ContactSchema>({
     resolver: zodResolver(contactFormSchema),
     mode: 'onBlur',
+    defaultValues: contactToEdit
+      ? {
+          name: contactToEdit.name,
+          phone: contactToEdit.phone,
+          email: contactToEdit.email,
+          cpf: contactToEdit.cpf,
+          address: contactToEdit.address,
+        }
+      : undefined,
   });
 
   const [isLoadingCep, setIsLoadingCep] = useState(false);
 
   const zipcode = watch('address.zipcode');
+
+  // Redirect if editing and contact not found
+  useEffect(() => {
+    if (isEditMode && !contactToEdit) {
+      showToast('Contato não encontrado', { type: 'error' });
+      navigate('/home');
+    }
+  }, [contactToEdit, isEditMode, navigate]);
 
   useEffect(() => {
     const cleanCep = zipcode?.replace(/\D/g, '');
@@ -111,21 +134,28 @@ export const CreateContact = () => {
 
   const onSubmit = async (data: ContactSchema) => {
     try {
-      await createContact(data);
-      showToast('Contato criado com sucesso', { type: 'success' });
+      if (isEditMode && id) {
+        await updateContact(id, data);
+        showToast('Contato atualizado com sucesso', { type: 'success' });
+      } else {
+        await createContact(data);
+        showToast('Contato criado com sucesso', { type: 'success' });
+      }
       navigate('/home');
     } catch (error) {
       if (error instanceof Error) {
         showToast(error.message, { type: 'error' });
       } else {
-        showToast('Erro ao criar contato', { type: 'error' });
+        showToast(`Erro ao ${isEditMode ? 'atualizar' : 'criar'} contato`, { type: 'error' });
       }
     }
   };
 
   return (
     <div className="h-full">
-      <h2 className="text-2xl text-dragon-700 dark:text-white font-bold mb-4">Novo contato</h2>
+      <h2 className="text-2xl text-dragon-700 dark:text-white font-bold mb-4">
+        {isEditMode ? 'Editar contato' : 'Novo contato'}
+      </h2>
       <div className="w-full rounded-lg border border-dragon-200 dark:border-dragon-800 bg-white dark:bg-dragon-800 p-4">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -245,7 +275,15 @@ export const CreateContact = () => {
           <div className="flex justify-end">
             <Button
               className="w-48 py-2"
-              title={isSubmitting ? 'Criando contato...' : 'Criar contato'}
+              title={
+                isSubmitting
+                  ? isEditMode
+                    ? 'Salvando contato...'
+                    : 'Criando contato...'
+                  : isEditMode
+                    ? 'Salvar contato'
+                    : 'Criar contato'
+              }
               type="submit"
             />
           </div>

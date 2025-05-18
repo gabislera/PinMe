@@ -1,4 +1,5 @@
 import { MapPin, Pencil, Phone, Trash } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import type { StoredContact } from '../../../repositories/contactsStorage';
 import { useContacts } from '../../../hooks/useContacts';
 import { Button } from '../../../components/Button';
@@ -13,6 +14,18 @@ export const ContactCard = ({
   isSelected: boolean;
 }) => {
   const { removeContact } = useContacts();
+  const navigate = useNavigate();
+
+  const handleEditClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigate(`/contacts/edit/${contact.id}`);
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    removeContact(contact.id);
+  };
+
   return (
     <div
       key={contact.id}
@@ -26,11 +39,11 @@ export const ContactCard = ({
           <div className="flex items-center justify-between">
             <h3 className="font-medium text-dragon-700 dark:text-white">{contact.name}</h3>
             <div className="flex gap-1">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" onClick={handleEditClick}>
                 <Pencil className="w-4 h-4 text-dragon-700 dark:text-white hover:text-dragon-600 dark:hover:text-dragon-300" />
                 <span className="sr-only">Editar</span>
               </Button>
-              <Button variant="ghost" size="sm" onClick={() => removeContact(contact.id)}>
+              <Button variant="ghost" size="sm" onClick={handleDeleteClick}>
                 <Trash className="w-4 h-4 text-red-500 hover:text-red-600" />
                 <span className="sr-only">Excluir</span>
               </Button>
