@@ -83,8 +83,12 @@ export const CreateContact = () => {
     fetchAddress();
   }, [zipcode, setValue, setError]);
 
-  const onSubmit = async (data: ContactFormData) => {
-    console.log('Dados enviados:', data);
+  const onSubmit = (data: ContactFormData) => {
+    try {
+      console.log('Dados enviados:', data);
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (

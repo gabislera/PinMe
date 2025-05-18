@@ -1,9 +1,17 @@
 import { createContext, useEffect, useState, type ReactNode } from 'react';
-import * as authService from '../services/auth/authService';
 import type { SignUpSchema } from '../pages/auth/SignUp';
 import type { SignInSchema } from '../pages/auth/SignIn';
 import type { UpdatePasswordSchema } from '../pages/settings';
-import { getCurrentUser, getUsers, type StoredUser } from '../services/auth/authStorage';
+import {
+  CURRENT_USER_KEY,
+  getCurrentUser,
+  getUsers,
+  type StoredUser,
+} from '../repositories/authStorage';
+import { updatePasswordService } from '../services/users/updatePassword';
+import { createUserService } from '../services/users/createUser';
+import { signInService } from '../services/auth/signIn';
+import { isAuthenticatedService } from '../services/auth/isAuthenticated';
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -24,20 +32,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    setIsAuthenticated(authService.isAuthenticated());
+    setIsAuthenticated(isAuthenticatedService());
   }, []);
 
   function signUp(data: SignUpSchema) {
-    authService.signUp(data);
+    createUserService(data);
   }
 
   function signIn(data: SignInSchema) {
-    authService.signIn(data);
+    signInService(data);
     setIsAuthenticated(true);
   }
 
   function signOut() {
-    authService.signOut();
+    localStorage.removeItem(CURRENT_USER_KEY);
     setIsAuthenticated(false);
   }
 
@@ -50,10 +58,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return user || null;
   }
 
-  // No AuthContext (simplifique a função changePassword)
-  // No AuthContext
   function changePassword(data: UpdatePasswordSchema): boolean {
-    return authService.changePassword(data);
+    return updatePasswordService(data);
   }
 
   return (
