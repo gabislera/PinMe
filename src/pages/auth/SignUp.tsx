@@ -13,7 +13,7 @@ const signUpSchema = z
       .min(3, { message: 'Nome deve ter no mínimo 3 caracteres' })
       .max(30, { message: 'Nome deve ter no máximo 30 caracteres' }),
     email: z.string().email({ message: 'Digite um email válido' }),
-    password: z.string().min(8, { message: 'Senha deve ter no mínimo 8 caracteres' }),
+    password: z.string().min(6, { message: 'Senha deve ter no mínimo 6 caracteres' }),
     confirmPassword: z.string(),
   })
   .refine(data => data.password === data.confirmPassword, {

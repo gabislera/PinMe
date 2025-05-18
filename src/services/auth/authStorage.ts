@@ -47,3 +47,14 @@ export function isAuthenticated(): boolean {
   const session = getCurrentUser();
   return !!session?.token;
 }
+
+export function updateUserPassword(userId: string, newPassword: string): boolean {
+  const users = getUsers();
+  const userIndex = users.findIndex(user => user.id === userId);
+
+  if (userIndex === -1) return false;
+
+  users[userIndex].password = newPassword;
+  localStorage.setItem(USERS_KEY, JSON.stringify(users));
+  return true;
+}

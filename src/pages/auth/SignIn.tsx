@@ -8,10 +8,7 @@ import { useAuth } from '../../hooks/useAuth';
 
 const signInSchema = z.object({
   email: z.string().email({ message: 'Digite um email válido' }),
-  password: z
-    .string()
-    .min(8, { message: 'Senha deve ter no mínimo 8 caracteres' })
-    .max(15, { message: 'Senha deve ter no máximo 15 caracteres' }),
+  password: z.string().min(6, { message: 'Senha deve ter no mínimo 6 caracteres' }),
 });
 
 export type SignInSchema = z.infer<typeof signInSchema>;

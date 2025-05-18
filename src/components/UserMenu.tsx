@@ -52,6 +52,7 @@ export const UserMenu = () => {
               className="w-full text-left px-4 py-2 text-sm text-dragon-700 dark:text-dragon-300 hover:bg-dragon-100 dark:hover:bg-dragon-700"
               onClick={() => {
                 setIsOpen(false);
+                navigate('/settings');
               }}
             >
               <span className="flex items-center">

@@ -6,6 +6,8 @@ import {
   setCurrentUser,
   isAuthenticated as checkAuth,
   clearCurrentUser,
+  updateUserPassword,
+  getUsers,
 } from './authStorage';
 
 export function signUp(data: SignUpSchema) {
@@ -33,4 +35,23 @@ export function signOut() {
 
 export function isAuthenticated(): boolean {
   return checkAuth();
+}
+
+export function changePassword(
+  userId: string,
+  currentPassword: string,
+  newPassword: string
+): boolean {
+  const users = getUsers();
+  const user = users.find(u => u.id === userId);
+
+  if (!user) {
+    throw new Error('Usuário não encontrado');
+  }
+
+  if (user.password !== currentPassword) {
+    throw new Error('Senha atual incorreta');
+  }
+
+  return updateUserPassword(userId, newPassword);
 }
