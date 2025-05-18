@@ -38,11 +38,13 @@ export const SignIn = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-[calc(100vh-78px)]  ">
-      <div className="flex flex-col items-center gap-4 w-full max-w-[450px] bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl shadow-lg">
+    <div className="flex flex-col items-center justify-center h-[calc(100vh-78px)]">
+      <div className="flex flex-col items-center gap-4 w-full max-w-[450px] bg-white/80 dark:bg-white/10 backdrop-blur-md border border-dragon-200 dark:border-white/20 p-8 rounded-3xl shadow-lg">
         <div className="flex flex-col items-center gap-1">
-          <h1 className="text-3xl font-bold text-white">Acesse sua conta</h1>
-          <p className="text-muted text-center">Informe seus dados para continuar.</p>
+          <h1 className="text-3xl font-bold text-dragon-700 dark:text-white">Acesse sua conta</h1>
+          <p className="text-dragon-500 dark:text-dragon-tertiary text-center">
+            Informe seus dados para continuar.
+          </p>
         </div>
 
         <form className="flex flex-col gap-2 w-full mt-4" onSubmit={handleSubmit(onSubmit)}>
@@ -63,11 +65,11 @@ export const SignIn = () => {
           <Button title="Entrar" type="submit" className="mt-4" isLoading={isSubmitting} />
         </form>
 
-        <span className="text-muted text-sm text-center">
+        <span className="text-dragon-500 dark:text-dragon-tertiary text-sm text-center">
           Ainda não tem uma conta?{' '}
           <Link
             to="/register"
-            className="text-tertiary hover:text-secondary transition-colors duration-300 font-bold"
+            className="text-dragon-primary hover:text-dragon-secondary transition-colors duration-300 font-bold"
           >
             Crie agora
           </Link>

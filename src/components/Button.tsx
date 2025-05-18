@@ -12,7 +12,7 @@ export const Button = ({ title, isLoading, className, children, ...rest }: Butto
     <button
       {...rest}
       disabled={isLoading}
-      className={`bg-primary hover:opacity-80 transition-all duration-300 text-white p-3 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+      className={`bg-dragon-primary hover:bg-dragon-secondary transition-all duration-300 text-white p-3 rounded-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
     >
       {title || children}
     </button>

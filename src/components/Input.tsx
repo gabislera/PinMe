@@ -12,8 +12,8 @@ interface InputProps extends ComponentProps<'input'> {
 }
 
 const variantClasses: Record<InputVariant, string> = {
-  solid: 'bg-zinc-800 border-zinc-700',
-  outlined: 'bg-transparent border-border',
+  solid: 'bg-white dark:bg-dragon-800 border-dragon-200 dark:border-dragon-800',
+  outlined: 'bg-transparent border-dragon-200 dark:border-dragon-700',
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -23,7 +23,10 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className="flex flex-col gap-2 w-full relative">
         {label && (
-          <label htmlFor={id} className="text-offwhite text-sm font-medium">
+          <label
+            htmlFor={id}
+            className="text-dragon-700 dark:text-dragon-tertiary text-sm font-medium"
+          >
             {label}
           </label>
         )}
@@ -32,9 +35,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           id={id}
           className={`
-            p-3 text-muted text-sm rounded-lg border
-            focus:border-muted focus:outline-none
-            placeholder:text-gray-400 w-full
+            p-3 text-dragon-700 dark:text-dragon-tertiary text-sm rounded-lg border
+            focus:border-dragon-primary focus:outline-none
+            placeholder:text-dragon-500 dark:placeholder:text-dragon-400 w-full
             ${icon ? 'pl-10' : ''}
             ${variantClasses[variant]}
             ${className ?? ''}

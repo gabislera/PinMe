@@ -2,9 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  background-color: #18191c;
+@layer base {
+  body {
+    @apply bg-dragon-100 dark:bg-dragon-900 text-dragon-700 dark:text-white;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 }

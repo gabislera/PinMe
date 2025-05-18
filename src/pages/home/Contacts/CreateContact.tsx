@@ -89,18 +89,25 @@ export const CreateContact = () => {
 
   return (
     <div className="h-full">
-      <h2 className="text-2xl text-white font-bold mb-4">Novo contato</h2>
-      <div className="w-full rounded-lg border border-zinc-700 bg-zinc-800 p-4">
+      <h2 className="text-2xl text-dragon-700 dark:text-white font-bold mb-4">Novo contato</h2>
+      <div className="w-full rounded-lg border border-dragon-200 dark:border-dragon-800 bg-white dark:bg-dragon-800 p-4">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <h2 className="lg:col-span-2 text-white font-semibold text-lg">
+            <h2 className="lg:col-span-2 text-dragon-700 dark:text-white font-semibold text-lg">
               Informações do contato
             </h2>
 
-            <Input label="Nome" placeholder="Seu nome" {...register('name')} error={errors.name} />
+            <Input
+              label="Nome"
+              variant="outlined"
+              placeholder="Seu nome"
+              {...register('name')}
+              error={errors.name}
+            />
 
             <Input
               label="Telefone *"
+              variant="outlined"
               placeholder="(00) 00000-0000"
               {...register('phone')}
               error={errors.phone}
@@ -108,6 +115,7 @@ export const CreateContact = () => {
 
             <Input
               label="Email *"
+              variant="outlined"
               placeholder="exemplo@email.com"
               {...register('email')}
               error={errors.email}
@@ -115,6 +123,7 @@ export const CreateContact = () => {
 
             <Input
               label="CPF *"
+              variant="outlined"
               placeholder="000.000.000-00"
               {...register('cpf')}
               error={errors.cpf}
@@ -122,10 +131,13 @@ export const CreateContact = () => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <h2 className="lg:col-span-2 text-white font-semibold text-lg">Endereço</h2>
+            <h2 className="lg:col-span-2 text-dragon-700 dark:text-white font-semibold text-lg">
+              Endereço
+            </h2>
 
             <Input
               label="CEP *"
+              variant="outlined"
               placeholder="00000-000"
               {...register('address.zipcode')}
               error={errors.address?.zipcode}
@@ -133,6 +145,7 @@ export const CreateContact = () => {
 
             <Input
               label="Rua *"
+              variant="outlined"
               placeholder="Rua Exemplo"
               {...register('address.street')}
               error={errors.address?.street}
@@ -141,6 +154,7 @@ export const CreateContact = () => {
 
             <Input
               label="Número *"
+              variant="outlined"
               placeholder="123"
               type="number"
               {...register('address.number')}
@@ -149,6 +163,7 @@ export const CreateContact = () => {
 
             <Input
               label="Complemento"
+              variant="outlined"
               placeholder="Apt 709"
               {...register('address.complement')}
               error={errors.address?.complement}
@@ -156,6 +171,7 @@ export const CreateContact = () => {
 
             <Input
               label="Bairro *"
+              variant="outlined"
               placeholder="Centro"
               {...register('address.neighborhood')}
               error={errors.address?.neighborhood}
@@ -164,6 +180,7 @@ export const CreateContact = () => {
 
             <Input
               label="Cidade *"
+              variant="outlined"
               placeholder="Cidade Exemplo"
               {...register('address.city')}
               error={errors.address?.city}
@@ -172,6 +189,7 @@ export const CreateContact = () => {
 
             <Select
               label="Estado *"
+              variant="outlined"
               options={brazilStates}
               {...register('address.state')}
               error={errors.address?.state}

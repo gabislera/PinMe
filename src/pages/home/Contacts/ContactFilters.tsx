@@ -10,7 +10,7 @@ export const ContactFilters = () => {
           type="text"
           // variant="outlined"
           placeholder="Buscar por nome ou CPF"
-          icon={<Search className="w-4 h-4 text-muted" />}
+          icon={<Search className="w-4 h-4 text-dragon-500 dark:text-dragon-tertiary" />}
         />
         <Select
           // variant="outlined"

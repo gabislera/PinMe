@@ -12,8 +12,8 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 const variantClasses: Record<SelectVariant, string> = {
-  solid: 'bg-zinc-800 border-zinc-700',
-  outlined: 'bg-transparent border-border',
+  solid: 'bg-white dark:bg-dragon-800 border-dragon-200 dark:border-dragon-800',
+  outlined: 'bg-transparent border-dragon-200 dark:border-dragon-700',
 };
 
 export const Select = ({
@@ -30,7 +30,10 @@ export const Select = ({
   return (
     <div className={`w-full flex flex-col gap-2 ${wrapperClassName ?? ''}`}>
       {label && (
-        <label htmlFor={id} className="text-sm font-medium text-gray-200">
+        <label
+          htmlFor={id}
+          className="text-sm font-medium text-dragon-700 dark:text-dragon-tertiary"
+        >
           {label}
         </label>
       )}
@@ -39,10 +42,10 @@ export const Select = ({
           id={id}
           {...props}
           className={`
-            appearance-none w-full bg-transparent border border-border text-muted
+            appearance-none w-full bg-transparent border border-dragon-200 dark:border-dragon-700 text-dragon-700 dark:text-dragon-tertiary
             rounded-lg px-4 py-3 pr-10 text-sm transition-all duration-200
-            focus:outline-none focus:border-muted
-            placeholder:text-muted ${className ?? ''}
+            focus:outline-none focus:border-dragon-primary dark:focus:border-dragon-tertiary
+            placeholder:text-dragon-500 dark:placeholder:text-dragon-tertiary ${className ?? ''}
             ${variantClasses[variant]}
           `}
         >
@@ -50,13 +53,13 @@ export const Select = ({
             Selecione uma opção
           </option>
           {options.map(option => (
-            <option key={option.value} value={option.value} className="text-black">
+            <option key={option.value} value={option.value} className="text-black dark:text-white">
               {option.label}
             </option>
           ))}
         </select>
 
-        <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted">
+        <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-dragon-500 dark:text-dragon-tertiary">
           <svg
             className="w-4 h-4"
             fill="none"
