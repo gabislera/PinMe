@@ -1,5 +1,6 @@
 import type { SignInSchema } from '../../pages/auth/SignIn';
 import type { SignUpSchema } from '../../pages/auth/SignUp';
+import type { UpdatePasswordSchema } from '../../pages/settings';
 import {
   findUserByEmail,
   createUser,
@@ -8,6 +9,7 @@ import {
   clearCurrentUser,
   updateUserPassword,
   getUsers,
+  getCurrentUser,
 } from './authStorage';
 
 export function signUp(data: SignUpSchema) {
@@ -37,21 +39,22 @@ export function isAuthenticated(): boolean {
   return checkAuth();
 }
 
-export function changePassword(
-  userId: string,
-  currentPassword: string,
-  newPassword: string
-): boolean {
+export function changePassword(data: UpdatePasswordSchema): boolean {
+  const currentUser = getCurrentUser();
+  if (!currentUser) {
+    throw new Error('Usuário não autenticado');
+  }
+
   const users = getUsers();
-  const user = users.find(u => u.id === userId);
+  const user = users.find(user => user.id === currentUser.userId);
 
   if (!user) {
     throw new Error('Usuário não encontrado');
   }
 
-  if (user.password !== currentPassword) {
+  if (user.password !== data.currentPassword) {
     throw new Error('Senha atual incorreta');
   }
 
-  return updateUserPassword(userId, newPassword);
+  return updateUserPassword(user.id, data.newPassword);
 }

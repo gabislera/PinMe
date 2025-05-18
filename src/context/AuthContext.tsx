@@ -50,13 +50,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return user || null;
   }
 
+  // No AuthContext (simplifique a função changePassword)
+  // No AuthContext
   function changePassword(data: UpdatePasswordSchema): boolean {
-    const user = getUserData();
-    if (!user) {
-      throw new Error('Usuário não está autenticado');
-    }
-
-    return authService.changePassword(user.id, data.currentPassword, data.newPassword);
+    return authService.changePassword(data);
   }
 
   return (
