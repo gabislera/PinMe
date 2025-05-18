@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { SignIn } from '../pages/auth/SignIn';
 import { SignUp } from '../pages/auth/SignUp';
 import { Home } from '../pages/auth/Home';
@@ -11,6 +11,7 @@ export const AuthRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<SignIn />} />
         <Route path="/register" element={<SignUp />} />
+        <Route path="*" element={<Navigate to="/login" />} />
       </Route>
     </Routes>
   );

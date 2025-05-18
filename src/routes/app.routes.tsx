@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { Home } from '../pages/home';
 import { HomeLayout } from '../layouts/HomeLayout';
 import { CreateContact } from '../pages/home/Contacts/CreateContact';
@@ -15,6 +15,7 @@ export function AppRoutes() {
       <Route element={<SettingsLayout />}>
         <Route path="/settings" element={<Settings />} />
       </Route>
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 }
