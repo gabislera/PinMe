@@ -4,6 +4,7 @@ export const CONTACTS_KEY = 'contacts';
 
 export type StoredContact = ContactSchema & {
   id: string;
+  userId: string;
   createdAt: string;
   updatedAt: string;
 };
