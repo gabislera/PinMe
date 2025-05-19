@@ -1,5 +1,4 @@
-
-<img width="1510" alt="Captura de Tela 2025-05-18 às 21 40 32" src="https://github.com/user-attachments/assets/78024a3b-c9a2-424a-9855-5ac3b86c5ce2" />
+<img width="1508" alt="Captura de Tela 2025-05-19 às 07 11 29" src="https://github.com/user-attachments/assets/981af0a5-c6f0-4a63-9d54-e091dd90c7b1" />
 
 # PinMe
 
