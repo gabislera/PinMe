@@ -20,13 +20,13 @@ export const AuthLayout = () => {
                 to="/login"
                 className="px-4 py-2 text-dragon-700 hover:text-dragon-500 dark:text-white dark:hover:text-dragon-300 text-sm"
               >
-                Log in
+                Entrar
               </Link>
               <Link
                 to="/register"
                 className="px-4 py-2 bg-dragon-primary hover:bg-dragon-secondary transition-all duration-300 text-white rounded-md text-sm"
               >
-                Sign up
+                Cadastrar
               </Link>
             </div>
           </div>

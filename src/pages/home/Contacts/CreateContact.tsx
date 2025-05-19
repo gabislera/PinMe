@@ -12,6 +12,9 @@ import { brazilStates } from '../../../utils/states';
 import { useContacts } from '../../../hooks/useContacts';
 import { useNavigate, useParams } from 'react-router-dom';
 import { showToast } from '../../../utils/toast';
+import { maskPhone } from '../../../utils/maskPhone';
+import { maskCpf } from '../../../utils/masCpf';
+import { maskCep } from '../../../utils/maskCep';
 
 interface ViaCepAddress {
   cep: string;
@@ -128,17 +131,54 @@ export const CreateContact = () => {
     setValue('address.neighborhood', address.bairro, { shouldValidate: true });
     setValue('address.city', address.localidade, { shouldValidate: true });
     setValue('address.state', address.uf, { shouldValidate: true });
-    // Focus on the number input since it still needs to be filled
     document.getElementById('address-number')?.focus();
   };
 
+  const [phoneDisplay, setPhoneDisplay] = useState(
+    contactToEdit ? maskPhone(contactToEdit.phone) : ''
+  );
+  const [cpfDisplay, setCpfDisplay] = useState(contactToEdit ? maskCpf(contactToEdit.cpf) : '');
+  const [cepDisplay, setCepDisplay] = useState(
+    contactToEdit ? maskCep(contactToEdit.address.zipcode) : ''
+  );
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D/g, '');
+    setPhoneDisplay(maskPhone(raw));
+    setValue('phone', raw, { shouldValidate: true });
+  };
+
+  const handleCpfChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D/g, '');
+    setCpfDisplay(maskCpf(raw));
+    setValue('cpf', raw, { shouldValidate: true });
+  };
+
+  const handleCepChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/\D/g, '');
+    setCepDisplay(maskCep(raw));
+    setValue('address.zipcode', raw, { shouldValidate: true });
+  };
+
   const onSubmit = async (data: ContactSchema) => {
+    const cleanPhone = data.phone.replace(/\D/g, '');
+    const cleanCpf = data.cpf.replace(/\D/g, '');
+    const cleanCep = data.address.zipcode.replace(/\D/g, '');
+    const cleanData = {
+      ...data,
+      phone: cleanPhone,
+      cpf: cleanCpf,
+      address: {
+        ...data.address,
+        zipcode: cleanCep,
+      },
+    };
     try {
       if (isEditMode && id) {
-        await updateContact(id, data);
+        await updateContact(id, cleanData);
         showToast('Contato atualizado com sucesso', { type: 'success' });
       } else {
-        await createContact(data);
+        await createContact(cleanData);
         showToast('Contato criado com sucesso', { type: 'success' });
       }
       navigate('/home');
@@ -150,6 +190,14 @@ export const CreateContact = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (contactToEdit) {
+      setPhoneDisplay(maskPhone(contactToEdit.phone));
+      setCpfDisplay(maskCpf(contactToEdit.cpf));
+      setCepDisplay(maskCep(contactToEdit.address.zipcode));
+    }
+  }, [contactToEdit]);
 
   return (
     <div className="h-full">
@@ -175,8 +223,10 @@ export const CreateContact = () => {
               label="Telefone *"
               variant="outlined"
               placeholder="(00) 00000-0000"
+              value={phoneDisplay}
               {...register('phone')}
               error={errors.phone}
+              onChange={handlePhoneChange}
             />
 
             <Input
@@ -191,8 +241,10 @@ export const CreateContact = () => {
               label="CPF *"
               variant="outlined"
               placeholder="000.000.000-00"
+              value={cpfDisplay}
               {...register('cpf')}
               error={errors.cpf}
+              onChange={handleCpfChange}
             />
           </div>
 
@@ -213,8 +265,10 @@ export const CreateContact = () => {
               label="CEP *"
               variant="outlined"
               placeholder="00000-000"
+              value={cepDisplay}
               {...register('address.zipcode')}
               error={errors.address?.zipcode}
+              onChange={handleCepChange}
             />
 
             <Input
