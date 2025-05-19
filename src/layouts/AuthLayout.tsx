@@ -1,12 +1,15 @@
 import { Outlet, Link } from 'react-router-dom';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { MapPin } from 'lucide-react';
 
 export const AuthLayout = () => {
   return (
     <div className="min-h-full flex flex-col bg-dragon-100 dark:bg-dragon-900 text-dragon-700 dark:text-white">
       <header className="border border-dragon-200 dark:border-dragon-800 shadow-sm py-6 px-6 bg-dragon-100 dark:bg-dragon-900">
         <div className="container mx-auto flex justify-between items-center">
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex items-center gap-2">
+            <MapPin className="w-6 h-6 text-dragon-primary" />
+
             <span className="text-xl font-bold text-dragon-700 dark:text-white">PinMe</span>
           </Link>
 

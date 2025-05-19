@@ -124,7 +124,7 @@ export const Settings = () => {
                 <Button
                   type="button"
                   title="Excluir Conta"
-                  className=" bg-dragon-danger hover:bg-dragon-danger/80"
+                  variant="danger"
                   onClick={handleDeleteAccount}
                 />
               </div>

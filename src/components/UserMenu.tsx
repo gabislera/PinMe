@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { Avatar } from './Avatar';
 import { LogOut, Settings } from 'lucide-react';
+import { Button } from './Button';
 
 export const UserMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +15,7 @@ export const UserMenu = () => {
 
   const handleSignOut = () => {
     signOut();
-    navigate('/login');
+    navigate('/');
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -32,12 +33,18 @@ export const UserMenu = () => {
 
   return (
     <div className="relative" ref={menuRef}>
-      <button className="cursor-pointer" onClick={() => setIsOpen(!isOpen)} aria-label="User menu">
+      <Button
+        variant="ghost"
+        size="sm"
+        className="cursor-pointer"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="User menu"
+      >
         <Avatar
           name={user?.name || 'User'}
           className="border-2 border-dragon-200 dark:border-dragon-700"
         />
-      </button>
+      </Button>
 
       {isOpen && (
         <div className="absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-dragon-800 border border-dragon-200 dark:border-dragon-700 z-20">
@@ -48,8 +55,10 @@ export const UserMenu = () => {
             </p>
           </div>
           <div className="py-1">
-            <button
+            <Button
               className="w-full text-left px-4 py-2 text-sm text-dragon-700 dark:text-dragon-300 hover:bg-dragon-100 dark:hover:bg-dragon-700"
+              variant="ghost"
+              size="sm"
               onClick={() => {
                 setIsOpen(false);
                 navigate('/settings');
@@ -59,16 +68,18 @@ export const UserMenu = () => {
                 <Settings className="w-4 h-4 mr-2" />
                 Configurações
               </span>
-            </button>
-            <button
-              className="w-full text-left px-4 py-2 text-sm text-dragon-700 dark:text-dragon-300 hover:bg-dragon-100 dark:hover:bg-dragon-700"
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
               onClick={handleSignOut}
+              className="px-4 py-2 text-dragon-700 dark:text-dragon-300 hover:bg-dragon-100 dark:hover:bg-dragon-700 w-full"
             >
               <span className="flex items-center">
                 <LogOut className="w-4 h-4 mr-2" />
                 Sair
               </span>
-            </button>
+            </Button>
           </div>
         </div>
       )}
