@@ -9,6 +9,7 @@ import { createContactService } from '../services/contacts/createContact';
 import type { ContactSchema } from '../pages/home/Contacts/CreateContact';
 import { removeContactService } from '../services/contacts/removeContact';
 import { updateContactService } from '../services/contacts/updateContact';
+import { useAuth } from '../hooks/useAuth';
 
 interface ContactsContextProps {
   contacts: StoredContact[];
@@ -34,14 +35,21 @@ export function ContactsProvider({ children }: ContactsProviderProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
   const [selectedContact, setSelectedContact] = useState<StoredContact | null>(null);
+  const { getUserData } = useAuth();
+  const user = getUserData();
+  const userId = user?.id;
 
   useEffect(() => {
+    if (!userId) {
+      setContacts([]);
+      return;
+    }
     const filters: ContactFilters = {
       searchTerm: searchTerm || undefined,
       sortOrder,
     };
     setContacts(listContactsService(filters));
-  }, [searchTerm, sortOrder]);
+  }, [searchTerm, sortOrder, userId]);
 
   const createContact = async (data: ContactSchema): Promise<StoredContact> => {
     const newContact = await createContactService(data);
