@@ -1,54 +1,97 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<img width="1510" alt="Captura de Tela 2025-05-18 às 21 40 32" src="https://github.com/user-attachments/assets/78024a3b-c9a2-424a-9855-5ac3b86c5ce2" />
 
-Currently, two official plugins are available:
+# PinMe
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+PinMe é uma aplicação web desenvolvida com React, TypeScript e Vite, que permite o cadastro, visualização e gerenciamento de contatos em um mapa interativo do Google Maps. Cada contato possui informações detalhadas, incluindo endereço geolocalizado, CPF, telefone e email. O sistema oferece autenticação, edição de contatos, busca automática de endereço via CEP e configurações de conta.
 
-## Expanding the ESLint configuration
+## Funcionalidades
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Cadastro, edição e exclusão de contatos com validação de CPF, telefone e email.
+- Visualização dos contatos em um mapa interativo (Google Maps).
+- Busca automática de endereço pelo CEP (ViaCEP).
+- Autenticação de usuário.
+- Alteração de senha e exclusão de conta.
+- Interface responsiva e tema escuro/claro.
+- Feedback visual com toasts para ações do usuário.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Tecnologias utilizadas
+
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-%23EC5990.svg?style=for-the-badge&logo=reacthookform&logoColor=white)
+![Zod](https://img.shields.io/badge/zod-%233068b7.svg?style=for-the-badge&logo=zod&logoColor=white)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
+
+
+## Pré-requisitos
+
+- [Node.js](https://nodejs.org/) (versão 18 ou superior recomendada)
+- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+
+## Instalação
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/gabislera/PinMe.git
+cd pinme
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Instale as dependências:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm install
+# ou
+yarn install
 ```
+
+## Configuração do Ambiente
+
+Crie um arquivo `.env` na raiz do projeto com a seguinte variável:
+
+```env
+VITE_GOOGLE_API_KEY=your_google_maps_api_key
+```
+
+- Substitua `your_google_maps_api_key` pela sua chave da API do Google Maps.
+- Para obter uma chave, acesse: [Google Cloud Console](https://console.cloud.google.com/).
+
+## Execução
+
+Para rodar o projeto em modo de desenvolvimento:
+
+```bash
+npm run dev
+# ou
+yarn dev
+```
+
+Acesse [http://localhost:5173](http://localhost:5173) no navegador.
+
+## Estrutura do Projeto
+
+```
+src/
+  components/      # Componentes reutilizáveis (Map, Input, Button, etc)
+  context/         # Contextos globais (Auth, Theme, Contacts, Toast)
+  hooks/           # Hooks customizados
+  layouts/         # Layouts de páginas
+  pages/           # Páginas principais (home, settings, etc)
+  repositories/    # Lógica de acesso a dados
+  routes/          # Definição de rotas
+  services/        # Serviços externos
+  utils/           # Utilitários e helpers
+public/            # Arquivos estáticos
+```
+
+## Variáveis de Ambiente
+
+- `VITE_GOOGLE_API_KEY`: Chave da API do Google Maps (obrigatória para funcionamento do mapa e geolocalização).
+
+## Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
