@@ -131,6 +131,7 @@ export const CreateContact = () => {
     setValue('address.neighborhood', address.bairro, { shouldValidate: true });
     setValue('address.city', address.localidade, { shouldValidate: true });
     setValue('address.state', address.uf, { shouldValidate: true });
+    setCepDisplay(maskCep(address.cep.replace(/\D/g, '')));
     document.getElementById('address-number')?.focus();
   };
 

@@ -1,12 +1,12 @@
 import { Search } from 'lucide-react';
-import { useContext, type ChangeEvent } from 'react';
+import { type ChangeEvent } from 'react';
 import { Input } from '../../../components/Input';
 import { Select } from '../../../components/Select';
-import { ContactsContext } from '../../../context/ContactsContext';
 import type { SortOrder } from '../../../services/contacts/getContacts';
+import { useContacts } from '../../../hooks/useContacts';
 
 export const ContactFilters = () => {
-  const { searchTerm, setSearchTerm, sortOrder, setSortOrder } = useContext(ContactsContext);
+  const { searchTerm, setSearchTerm, sortOrder, setSortOrder } = useContacts();
 
   const handleSortChange = (event: ChangeEvent<HTMLSelectElement>) => {
     setSortOrder(event.target.value as SortOrder);

@@ -1,6 +1,13 @@
 import type { ContactSchema } from '../../pages/home/Contacts/CreateContact';
-import { CONTACTS_KEY, getContacts, type StoredContact } from '../../repositories/contactsStorage';
-import { getCurrentUser, getUserIdFromToken } from '../../repositories/authStorage';
+import {
+  findContactById,
+  findContactsByUserId,
+  getContacts,
+  saveContacts,
+  type StoredContact,
+} from '../../repositories/contactsStorage';
+import { getSession } from '../../repositories/authStorage';
+import { getUserIdFromToken } from '../auth/tokenService';
 import { getGeoCodeAddress } from '../../utils/getGeoCodeAddress';
 
 export const updateContactService = async (
@@ -8,7 +15,7 @@ export const updateContactService = async (
   contact: ContactSchema
 ): Promise<StoredContact> => {
   // Get current user ID
-  const session = getCurrentUser();
+  const session = getSession();
   if (!session) {
     throw new Error('Usuário não autenticado');
   }
@@ -18,9 +25,7 @@ export const updateContactService = async (
     throw new Error('Sessão inválida');
   }
 
-  const contacts = getContacts();
-  const contactToUpdate = contacts.find(c => c.id === id);
-
+  const contactToUpdate = findContactById(id);
   if (!contactToUpdate) {
     throw new Error('Contato não encontrado');
   }
@@ -30,7 +35,9 @@ export const updateContactService = async (
   }
 
   // Check if CPF or email is already in use by another contact
-  const otherContacts = contacts.filter(c => c.id !== id && c.userId === userId);
+  const userContacts = findContactsByUserId(userId);
+  const otherContacts = userContacts.filter(c => c.id !== id);
+
   if (otherContacts.some(existingContact => existingContact.cpf === contact.cpf)) {
     throw new Error('CPF já cadastrado');
   }
@@ -52,8 +59,9 @@ export const updateContactService = async (
   };
 
   // Update contact in storage
+  const contacts = getContacts();
   const updatedContacts = contacts.map(c => (c.id === id ? updatedContact : c));
-  localStorage.setItem(CONTACTS_KEY, JSON.stringify(updatedContacts));
+  saveContacts(updatedContacts);
 
   return updatedContact;
 };

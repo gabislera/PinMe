@@ -1,5 +1,6 @@
-import { CONTACTS_KEY, type StoredContact } from '../../repositories/contactsStorage';
-import { getCurrentUser, getUserIdFromToken } from '../../repositories/authStorage';
+import { findContactsByUserId, type StoredContact } from '../../repositories/contactsStorage';
+import { getSession } from '../../repositories/authStorage';
+import { getUserIdFromToken } from '../auth/tokenService';
 
 export type SortOrder = 'asc' | 'desc';
 
@@ -9,16 +10,13 @@ export interface ContactFilters {
 }
 
 export const listContactsService = (filters?: ContactFilters): StoredContact[] => {
-  const rawContacts = localStorage.getItem(CONTACTS_KEY) || '[]';
-  const contacts: StoredContact[] = JSON.parse(rawContacts);
-
-  const session = getCurrentUser();
+  const session = getSession();
   if (!session) return [];
 
   const userId = getUserIdFromToken(session.token);
   if (!userId) return [];
 
-  let filteredContacts = contacts.filter(contact => contact.userId === userId);
+  let filteredContacts = findContactsByUserId(userId);
 
   const { searchTerm = '', sortOrder } = filters || {};
 

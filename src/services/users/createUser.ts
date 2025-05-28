@@ -1,5 +1,5 @@
 import type { SignUpSchema } from '../../pages/auth/SignUp';
-import { createUser, findUserByEmail } from '../../repositories/authStorage';
+import { findUserByEmail, getUsers, saveUsers } from '../../repositories/authStorage';
 
 export function createUserService(data: SignUpSchema) {
   const userExists = findUserByEmail(data.email);
@@ -7,5 +7,16 @@ export function createUserService(data: SignUpSchema) {
     throw new Error('E-mail já cadastrado');
   }
 
-  createUser({ name: data.name, email: data.email, password: data.password });
+  const users = getUsers();
+  const newUser = {
+    id: crypto.randomUUID(),
+    name: data.name,
+    email: data.email,
+    password: data.password,
+  };
+
+  users.push(newUser);
+  saveUsers(users);
+
+  return newUser;
 }

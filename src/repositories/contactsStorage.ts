@@ -16,7 +16,19 @@ export function getContacts(): StoredContact[] {
   return data ? JSON.parse(data) : [];
 }
 
-export function saveContact(contact: StoredContact): void {
+export function saveContacts(contacts: StoredContact[]): void {
+  localStorage.setItem(CONTACTS_KEY, JSON.stringify(contacts));
+}
+
+export function addContact(contact: StoredContact): void {
   const contacts = getContacts();
-  localStorage.setItem(CONTACTS_KEY, JSON.stringify([...contacts, contact]));
+  saveContacts([...contacts, contact]);
+}
+
+export function findContactById(id: string): StoredContact | undefined {
+  return getContacts().find(contact => contact.id === id);
+}
+
+export function findContactsByUserId(userId: string): StoredContact[] {
+  return getContacts().filter(contact => contact.userId === userId);
 }

@@ -4,12 +4,12 @@ import type { SignInSchema } from '../pages/auth/SignIn';
 import type { UpdatePasswordSchema } from '../pages/settings';
 import type { DeleteAccountSchema } from '../components/DeleteAccountModal';
 import {
-  CURRENT_USER_KEY,
-  getCurrentUser,
-  getUsers,
-  getUserIdFromToken,
+  clearSession,
+  findUserById,
+  getSession,
   type StoredUser,
 } from '../repositories/authStorage';
+import { getUserIdFromToken } from '../services/auth/tokenService';
 import { updatePasswordService } from '../services/users/updatePassword';
 import { createUserService } from '../services/users/createUser';
 import { signInService } from '../services/auth/signIn';
@@ -49,20 +49,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   function signOut() {
-    localStorage.removeItem(CURRENT_USER_KEY);
+    clearSession();
     setIsAuthenticated(false);
   }
 
   function getUserData(): StoredUser | null {
-    const session = getCurrentUser();
+    const session = getSession();
     if (!session) return null;
 
     const userId = getUserIdFromToken(session.token);
     if (!userId) return null;
 
-    const users = getUsers();
-    const user = users.find(item => item.id === userId);
-    return user || null;
+    return findUserById(userId) || null;
   }
 
   function changePassword(data: UpdatePasswordSchema): boolean {
